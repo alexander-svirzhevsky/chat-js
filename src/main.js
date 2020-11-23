@@ -1,7 +1,7 @@
 const socket = new WebSocket("ws://localhost:8085");
 const login = require('./js/login');
-const messages = require('./js/messageList');
-// const send = require('./js/messageSender');
+const messages = require('./js/messagesList');
+const userArray = require('./js/userList');
 
 // elements login
 const loginWindow = document.querySelector('#login');
@@ -33,26 +33,26 @@ submitButton.addEventListener('click', () => {
 
 socket.addEventListener('message', function (e) {
   const response = JSON.parse(e.data);
-  const name = response.data.name;
-  const message = response.data.message;
 
   console.log(response);
 
   if (response.type === "hello") {
-    login.addUser(name)
-    login.addSystemMessage(`${name} вошел в чат`)
+    const name = response.data.name;
+    userArray.add(name)
+    messages.addSystemMessage(`${name} вошел в чат`)
   } else if (response.type === 'user-list') {
 
     for (const item of response) {
-      login.addUser(item)
-      console.log(item);
+      userArray.add(item)
     }
-  }
-  // else if (type === 'bye-bye') {
-  //   login.addSystemMessage(`${response.data.name} вышел из чата`);
-  // } else
-  if (response.type === 'text-message') {
-    messages.add(name, message);
+
+  } else if (response.type === 'bye-bye' && response.from) {
+    userArray.remove(response.from)
+    messages.addSystemMessage(`${response.from} вышел из чата`);
+
+  } else if (response.type === 'text-message') {
+    const message = response.data.message;
+    messages.add(response.from, message);
   }
 });
 
@@ -65,3 +65,4 @@ messageSendButton.addEventListener('click', () => {
   login.sendTextMessage(message);
   messageInput.value = ''
 })
+

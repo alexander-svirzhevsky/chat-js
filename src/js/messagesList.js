@@ -26,7 +26,17 @@ function add(from, text) {
     messageList.scrollTop = messageList.scrollHeight;
 }
 
+function addSystemMessage(message) {
+    const item = document.createElement('div');
+
+    item.classList.add('message-item', 'message-item-system');
+    item.textContent = message;
+
+    messageList.append(item)
+}
+
 
 module.exports = {
-    add
+    add,
+    addSystemMessage
 }

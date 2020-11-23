@@ -28,6 +28,7 @@ wss.on('connection', (socket) => {
             );
         }
 
+
         sendMessageFrom(connections, message, socket, excludeItself);
     });
 
@@ -59,5 +60,5 @@ function sendMessageFrom(connections, message, from, excludeSelf) {
     }
 }
 
-server.listen(8087);
+server.listen(8085);
 
