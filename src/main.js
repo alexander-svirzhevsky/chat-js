@@ -1,6 +1,7 @@
 const socket = new WebSocket("ws://localhost:8085");
 const login = require('./js/login');
 const messages = require('./js/messagesList');
+const userList = require('./js/userList');
 const userArray = require('./js/userList');
 
 // elements login
@@ -33,7 +34,7 @@ submitButton.addEventListener('click', () => {
 
 socket.addEventListener('message', function (e) {
   const response = JSON.parse(e.data);
-
+  userList.buildDOM()
   console.log(response);
 
   if (response.type === "hello") {
@@ -42,7 +43,7 @@ socket.addEventListener('message', function (e) {
     messages.addSystemMessage(`${name} вошел в чат`)
   } else if (response.type === 'user-list') {
 
-    for (const item of response) {
+    for (const item of response.data) {
       userArray.add(item)
     }
 

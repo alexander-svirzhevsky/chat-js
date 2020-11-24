@@ -19,13 +19,12 @@ wss.on('connection', (socket) => {
         if (message.type === 'hello') {
             excludeItself = true;
             connections.get(socket).userName = message.data.name;
-            sendMessageTo(
-                {
-                    type: 'user-list',
-                    data: [...connections.values()].map((item) => item.userName).filter(Boolean),
-                },
-                socket
-            );
+            const userListMessage = {
+                type: 'user-list',
+                data: [...connections.values()].map((item) => item.userName).filter(Boolean),
+            }
+
+            sendMessageFrom(connections, userListMessage, socket, excludeItself);
         }
 
 

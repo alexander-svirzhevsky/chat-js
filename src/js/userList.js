@@ -30,5 +30,6 @@ function remove(name) {
 
 module.exports = {
     add,
-    remove
+    remove,
+    buildDOM
 }
