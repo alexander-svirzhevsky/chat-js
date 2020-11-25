@@ -1,5 +1,3 @@
-
-
 const http = require('http');
 const Index = require('ws');
 
@@ -37,9 +35,6 @@ wss.on('connection', (socket) => {
     });
 });
 
-function sendMessageTo(message, to) {
-    to.send(JSON.stringify(message));
-}
 
 function sendMessageFrom(connections, message, from, excludeSelf) {
     const socketData = connections.get(from);

@@ -11,8 +11,7 @@ const mainWindow = document.querySelector('#main');
 const loginNameInput = document.querySelector('[data-role=login-name-input]');
 const submitButton = document.querySelector('[data-role=login-submit]');
 const loginError = document.querySelector('[data-role=login-error]');
-
-// element mainWindow 
+const userPhoto = document.querySelector('[data-role=user-photo]');
 const userName = document.querySelector('[data-role=user-name]');
 
 
@@ -66,4 +65,29 @@ messageSendButton.addEventListener('click', () => {
   login.sendTextMessage(message);
   messageInput.value = ''
 })
+
+// <==========
+
+userPhoto.addEventListener('dragover', (e) => {
+  if (e.dataTransfer.items.length && e.dataTransfer.items[0].kind === 'file') {
+    e.preventDefault();
+  }
+});
+
+userPhoto.addEventListener('drop', (e) => {
+  const file = e.dataTransfer.items[0].getAsFile();
+  const reader = new FileReader();
+
+  reader.readAsDataURL(file);
+  reader.addEventListener('load', () => onUpload(reader.result));
+  e.preventDefault();
+});
+
+function onUpload(data) {
+  set(data);
+}
+
+function set(photo) {
+  userPhoto.style.backgroundImage = `url(${photo})`;
+}
 
